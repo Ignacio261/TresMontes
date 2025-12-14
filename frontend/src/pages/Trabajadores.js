@@ -3,10 +3,16 @@ import React, { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { Add as AddIcon } from "@mui/icons-material";
 
+import TrabajadoresTable from "../components/Trabajadores/TrabajadorTable";
 import NuevoTrabajadorModal from "../components/Trabajadores/NuevoTrabajadorModal";
+import CargaMasiva from "../components/Trabajadores/CargaMasiva";
 
 export default function Trabajadores() {
-  const [openModal, setOpenModal] = useState(false);
+  const [openNuevo, setOpenNuevo] = useState(false);
+  const [openCarga, setOpenCarga] = useState(false);
+  const [reload, setReload] = useState(false);
+
+  const refrescar = () => setReload(!reload);
 
   return (
     <Box sx={{ p: 3 }}>
@@ -14,24 +20,44 @@ export default function Trabajadores() {
       <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
         <Typography variant="h4">Gestión de Trabajadores</Typography>
 
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setOpenModal(true)}
-        >
-          Nuevo Trabajador
-        </Button>
+        <Box>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={{ mr: 2 }}
+            onClick={() => setOpenNuevo(true)}
+          >
+            Nuevo Trabajador
+          </Button>
+
+          <Button
+            variant="outlined"
+            onClick={() => setOpenCarga(true)}
+          >
+            Carga Masiva
+          </Button>
+        </Box>
       </Box>
 
-      {/* Aquí irá la tabla real en tu siguiente fase */}
-      <Typography>Próximamente: Lista completa de trabajadores.</Typography>
+      {/* Tabla */}
+      <TrabajadoresTable reload={reload} />
 
-      {/* Modal principal */}
+      {/* Modales */}
       <NuevoTrabajadorModal
-        open={openModal}
-        onClose={() => setOpenModal(false)}
+        open={openNuevo}
+        onClose={() => setOpenNuevo(false)}
         onSuccess={() => {
-          console.log("Nuevo trabajador registrado");
+          refrescar();
+          setOpenNuevo(false);
+        }}
+      />
+
+      <CargaMasiva
+        open={openCarga}
+        onClose={() => setOpenCarga(false)}
+        onSuccess={() => {
+          refrescar();
+          setOpenCarga(false);
         }}
       />
     </Box>

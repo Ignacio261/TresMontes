@@ -1,5 +1,3 @@
-// src/pages/Login.js
-
 import React, { useState } from "react";
 import {
   Container,
@@ -20,76 +18,84 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setLoading(true);
 
-    try {
-      const res = await fetch("http://127.0.0.1:8000/api/token/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        setError(err.detail || "Credenciales inválidas");
-        setLoading(false);
+    setTimeout(() => {
+      // RRHH
+      if (username === "rrhh123" && password === "rrhh123") {
+        localStorage.setItem("access_token", "demo-token");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            username: "rrhh123",
+            rol: "rrhh_admin",
+            nombre: "Administrador RRHH",
+          })
+        );
+        navigate("/");
         return;
       }
 
-      const data = await res.json();
+      // SUPERVISOR
+      if (username === "supervisor123" && password === "supervisor123") {
+        localStorage.setItem("access_token", "demo-token");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            username: "supervisor123",
+            rol: "supervisor",
+            nombre: "Supervisor General",
+          })
+        );
+        navigate("/supervisor");
+        return;
+      }
 
-      // Guardar tokens
-      localStorage.setItem("access_token", data.access);
-      localStorage.setItem("refresh_token", data.refresh);
-
-      // Guardar datos usuario
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          username,
-          nombre: username,
-          rol: "rrhh_admin",
-        })
-      );
-
-      navigate("/");
-
-    } catch (err) {
-      console.error(err);
-      setError("Error de conexión");
-    } finally {
+      setError("Credenciales incorrectas");
       setLoading(false);
-    }
+    }, 600);
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box sx={{ mt: 10, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <Paper elevation={4} sx={{ p: 4, width: "100%", textAlign: "center" }}>
-          
-          <Typography variant="h4" sx={{ mb: 2, fontWeight: "bold" }}>
-            LOGIN RRHH
+    <Container maxWidth="xs">
+      <Box sx={{ mt: 10 }}>
+        <Paper sx={{ p: 4 }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Sistema GESENT
           </Typography>
 
           {error && <Alert severity="error">{error}</Alert>}
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <TextField fullWidth label="Usuario" margin="normal"
-              value={username} onChange={(e) => setUsername(e.target.value)} />
+          <Box component="form" onSubmit={handleSubmit}>
+            <TextField
+              fullWidth
+              label="Usuario"
+              margin="normal"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
 
-            <TextField fullWidth label="Contraseña" type="password" margin="normal"
-              value={password} onChange={(e) => setPassword(e.target.value)} />
+            <TextField
+              fullWidth
+              type="password"
+              label="Contraseña"
+              margin="normal"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-            <Button variant="contained" type="submit" fullWidth disabled={loading} sx={{ mt: 3 }}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3 }}
+              disabled={loading}
+              type="submit"
+            >
               {loading ? <CircularProgress size={24} /> : "Ingresar"}
             </Button>
-
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              Usuario de prueba: rrhh123 / rrhh123
-            </Typography>
           </Box>
         </Paper>
       </Box>

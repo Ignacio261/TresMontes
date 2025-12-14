@@ -1,46 +1,75 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AuthGuard from "./guards/AuthGuard";
-import Layout from "./components/Layout";
 
+// Layouts
+import Layout from "./components/Layout";
+import SupervisorLayout from "./layouts/SupervisorLayout";
+
+// Pages RRHH
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Trabajadores from "./pages/Trabajadores";
-import Notificaciones from "./pages/Notificaciones";
-import Entregas from "./pages/Entregas";
-import QRManager from "./pages/QRManager";
-import Configuracion from "./pages/Configuracion";
-import Reportes from "./pages/reportes/Reportes";
+
+// Supervisor Pages
+import SupervisorDashboard from "./pages/supervisor/Dashboard";
+import SupervisorTrabajadores from "./pages/supervisor/Trabajadores";
+import SupervisorQR from "./pages/supervisor/QR";
+import SupervisorNotificaciones from "./pages/supervisor/Notificaciones";
+import SupervisorReportes from "./pages/supervisor/Reportes";
+import SupervisorPerfil from "./pages/supervisor/Perfil";
+
+// Compartidas
+import TrabajadorDetalle from "./pages/TrabajadorDetalle";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        
-        {/* Login público */}
+
+        {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* Todo lo protegido va dentro del Layout */}
+        {/* ========================= */}
+        {/* RRHH */}
+        {/* ========================= */}
         <Route
           path="/"
           element={
-            <AuthGuard>
+            <AuthGuard rol="rrhh_admin">
               <Layout />
             </AuthGuard>
           }
         >
           <Route index element={<Dashboard />} />
           <Route path="trabajadores" element={<Trabajadores />} />
-          <Route path="entregas" element={<Entregas />} />
-          <Route path="notificaciones" element={<Notificaciones />} />
-          <Route path="qr" element={<QRManager />} />
-          <Route path="configuracion" element={<Configuracion />} />
-          <Route path="reportes" element={<Reportes />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* ========================= */}
+        {/* SUPERVISOR */}
+        {/* ========================= */}
+        <Route
+          path="/supervisor"
+          element={
+            <AuthGuard rol="supervisor">
+              <SupervisorLayout />
+            </AuthGuard>
+          }
+        >
+          <Route index element={<SupervisorDashboard />} />
+          <Route path="trabajadores" element={<SupervisorTrabajadores />} />
+          <Route path="trabajadores/:id" element={<TrabajadorDetalle />} />
+          <Route path="qr" element={<SupervisorQR />} />
+          <Route path="notificaciones" element={<SupervisorNotificaciones />} />
+          <Route path="reportes" element={<SupervisorReportes />} />
+          <Route path="perfil" element={<SupervisorPerfil />} />
+          <Route path="/supervisor/trabajadores" element={<SupervisorTrabajadores />} />
+          <Route path="/supervisor/trabajadores/:id" element={<TrabajadorDetalle />} />
+
+
+        </Route>
+
       </Routes>
     </BrowserRouter>
   );

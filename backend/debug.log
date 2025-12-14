@@ -624,3 +624,22 @@ Traceback (most recent call last):
     ...<3 lines>...
     )
 django.core.exceptions.ValidationError: ['“” no es un UUID válido.']
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/qr/
+Unauthorized: /api/qr/
+Unauthorized: /api/notificaciones/
+Unauthorized: /api/notificaciones/
+Watching for file changes with StatReloader
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
+Unauthorized: /api/trabajadores/
